@@ -9,10 +9,10 @@
 
 | Tool              | Version / Choice          | Notes                                  |
 |-------------------|---------------------------|----------------------------------------|
-| Framework         | React 18+                 | Functional components only, no classes |
-| Build Tool        | Vite                      | Fast HMR for animation iteration       |
+| Framework         | Next.js 14+               | App Router; SSR for public pages, CSR for quiz/portal |
+| Build Tool        | Next.js built-in (Turbopack) | Fast HMR for animation iteration    |
 | Language          | TypeScript (strict)       | No `any` without justification         |
-| Routing           | React Router v6+          | File-based structure preferred         |
+| Routing           | Next.js App Router        | File-based, `app/` directory           |
 | State Management  | TBD (Zustand preferred)   | Confirm before installing              |
 | Data Fetching     | TanStack Query (React Query) | Confirm before installing           |
 | Styling           | TBD — ask me to decide    | Tailwind vs CSS Modules                |
