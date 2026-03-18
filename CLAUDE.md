@@ -13,10 +13,10 @@
 | Build Tool        | Next.js built-in (Turbopack) | Fast HMR for animation iteration    |
 | Language          | TypeScript (strict)       | No `any` without justification         |
 | Routing           | Next.js App Router        | File-based, `app/` directory           |
-| State Management  | TBD (Zustand preferred)   | Confirm before installing              |
-| Data Fetching     | TanStack Query (React Query) | Confirm before installing           |
-| Styling           | TBD — ask me to decide    | Tailwind vs CSS Modules                |
-| Animation         | TBD — recommend to me     | See Animation section below            |
+| State Management  | Zustand (confirmed)       | Client UI state only (modals, quiz progress) |
+| Data Fetching     | TanStack Query / React Query (confirmed) | All server state — no raw useEffect |
+| Styling           | Tailwind CSS (confirmed)  | Utility-first; no CSS Modules          |
+| Animation         | GSAP free tier + split-type + Lenis (confirmed) | See Animation section below |
 | Design Source     | Figma                     | Always the source of truth             |
 
 ---
@@ -41,30 +41,37 @@ Never combine steps 3, 4, and 5 in a single pass.
 
 ## 🎬 Animation Guidelines
 
-### Before Choosing a Library
-This project is animation-heavy. Before writing any animation code, answer these questions for me:
-- Is this a **scroll-triggered** animation? → GSAP ScrollTrigger is likely better
-- Is this a **page transition or component mount/unmount**? → Framer Motion is likely better
-- Is this a **CSS-only micro-interaction** (hover, focus)? → Pure CSS transitions, no library needed
-- Is this a **timeline/sequence animation**? → GSAP is better
+### Confirmed Animation Stack
+Animation library decision is closed. The stack is:
+- **GSAP free tier** — ScrollTrigger, timelines, MotionPath, stagger
+- **split-type** — character/word/line splitting (replaces paid GSAP SplitText)
+- **Lenis** — smooth scroll (replaces paid GSAP ScrollSmoother)
 
-**Do not install both Framer Motion and GSAP without explicit discussion.** Pick one primary library.
+Do NOT add Framer Motion — the stack is closed. For any animation requirement not covered by these three, discuss before adding anything new.
+
+When choosing which tool to use within the confirmed stack:
+- Scroll-triggered animation → GSAP ScrollTrigger
+- Text splitting (reveal by character/word/line) → split-type + GSAP
+- Timeline/sequence animation → GSAP timeline
+- SVG path animation → GSAP MotionPath
+- Smooth scroll behaviour → Lenis
+- CSS-only micro-interaction (hover, focus) → pure CSS transitions, no library
 
 ### Animation Implementation Rules
 Every animation must follow this structure:
 
 ```tsx
 // ANIMATION: [Figma component name] — [describe the visual effect]
-// LIBRARY: [Framer Motion | GSAP | CSS]
+// LIBRARY: [GSAP | split-type | Lenis | CSS]
 // FIGMA REF: [Figma frame/prototype link or description]
 // TIMING: duration=[value]ms, easing=[curve], delay=[value]ms
 
-// Example with Framer Motion:
-<motion.div
-  initial={{ opacity: 0, y: 24 }}   // Start state (from Figma prototype)
-  animate={{ opacity: 1, y: 0 }}    // End state
-  transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }} // Figma easing
->
+// Example with GSAP:
+gsap.fromTo(
+  element,
+  { opacity: 0, y: 24 },                              // Start state (from Figma prototype)
+  { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' } // End state + Figma easing
+);
 ```
 
 ### Performance Rules
@@ -73,24 +80,25 @@ Every animation must follow this structure:
 - Use `will-change: transform` sparingly and only on elements that are actively animating.
 - All animations must respect `prefers-reduced-motion`:
 
-```tsx
-// Always wrap animation configs with this hook
+```ts
+// Always check before running GSAP animations
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const animationProps = prefersReducedMotion ? {} : { initial: ..., animate: ..., transition: ... };
+if (!prefersReducedMotion) {
+  gsap.fromTo(element, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4 });
+}
 ```
 
 ### Animation File Structure
 ```
 /src
 ├── animations/
-│   ├── variants.ts        ← Framer Motion variant definitions
-│   ├── gsap-configs.ts    ← GSAP timeline configs
+│   ├── gsap-configs.ts    ← GSAP timeline + ScrollTrigger configs
+│   ├── lenis-config.ts    ← Lenis smooth scroll initialisation
 │   └── tokens.ts          ← Duration, easing values from Figma
 ├── components/
 │   └── [ComponentName]/
 │       ├── index.tsx      ← Logic + structure
-│       ├── styles.module.css  ← Static styles
-│       └── animations.ts  ← Component-specific animation logic
+│       └── animations.ts  ← Component-specific GSAP logic
 ```
 
 ---
@@ -100,10 +108,10 @@ const animationProps = prefersReducedMotion ? {} : { initial: ..., animate: ...,
 Every component must follow this folder structure:
 ```
 /ComponentName
-├── index.tsx           ← Main component export
-├── ComponentName.tsx   ← Component implementation
-├── styles.module.css   ← Scoped styles
-├── types.ts            ← TypeScript interfaces for this component
+├── index.tsx               ← Main component export
+├── ComponentName.tsx       ← Component implementation
+├── types.ts                ← TypeScript interfaces for this component
+├── animations.ts           ← Component-specific GSAP logic (if animated)
 └── ComponentName.test.tsx  ← Tests (even placeholder ones)
 ```
 
@@ -119,7 +127,7 @@ Every component must follow this folder structure:
 
 - All API calls must go through a typed service layer in `/src/services/`.
 - Use TanStack Query for all server state — never raw `useEffect` + `fetch`.
-- Define API base URL from environment variables only: `import.meta.env.VITE_API_URL`
+- Define API base URL from environment variables only: `process.env.NEXT_PUBLIC_API_URL`
 - All API response types must be defined in `/src/types/api.ts`.
 
 ```typescript
