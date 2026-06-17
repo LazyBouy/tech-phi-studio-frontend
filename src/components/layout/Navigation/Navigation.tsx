@@ -155,13 +155,14 @@ export function Navigation() {
                 box would move the positioning origin to the padding box — inside the border —
                 and push the balls ~6px off the track, onto the content side.) */}
             <div className="relative h-[430px] w-full max-w-[420px]">
-              {/* TRACK — Figma "Vector 707" (659:28290), exact values read live via the
-                  extended figma-mcp (CH-T1): a 14px stroke filled with a white→blue linear
-                  gradient at 30% opacity, LUMINOSITY blend, plus an inner shadow. Rendered as
-                  a gradient-border ring: the gradient paints the border-box and is masked out
-                  of the padding-box (mask-composite exclude). Inline style — this layered
-                  mask/blend/inset-shadow combo has no clean Tailwind-utility form. Outer radius
-                  27 keeps the stroke centreline at Figma's radius 20 (20 + half of 14). */}
+              {/* TRACK — Figma "Vector 707" (659:28290): a translucent, colour-adopting,
+                  3-D groove. Built as TWO stacked layers so prominence/depth and
+                  translucency don't fight (the single-layer version went either bright-blue
+                  or washed-out-faint). Outer radius 27 keeps the 14px stroke's centreline at
+                  Figma's radius 20. Inline styles — mask/blend/inset-shadow have no clean
+                  Tailwind form. CH-14 animates the balls along this path.
+                  Layer 1 — the colour band: white→blue gradient stroke under LUMINOSITY blend
+                  so it stays neutral grey-white (adopts the backdrop colour) yet translucent. */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 rounded-[27px]"
@@ -171,15 +172,20 @@ export function Navigation() {
                   WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
                   maskComposite: "exclude",
-                  // Soft, frosted, near-neutral 3-D track (matches Figma). The LUMINOSITY
-                  // blend is essential: it keeps only the white→blue gradient's *lightness*
-                  // and takes the backdrop's muted colour, so the ring reads pale grey-white,
-                  // NOT bright blue. 14px width gives it presence at Figma's 0.3 opacity; the
-                  // blur feathers the edges (glow) and the inner shadow adds recessed depth.
-                  opacity: 0.3,
+                  opacity: 0.5,
                   mixBlendMode: "luminosity",
-                  filter: "blur(1.5px)",
-                  boxShadow: "inset 2px 3px 7px #4b89b8",
+                  filter: "blur(0.5px)",
+                }}
+              />
+              {/* Layer 2 — the depth (normal blend so it reads even where the band is faint):
+                  the Figma inner shadow (top-left, recessed) + a soft bottom-right highlight =
+                  a clearly 3-D groove the balls sit in. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[27px]"
+                style={{
+                  boxShadow:
+                    "inset 2px 3px 7px rgba(75,137,184,0.55), inset -2px -3px 8px rgba(255,255,255,0.5)",
                 }}
               />
               {/* Balls centred on the 14px band (7px = half the stroke). CH-14 animates along it. */}
