@@ -171,11 +171,13 @@ export function Navigation() {
                   WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
                   maskComposite: "exclude",
-                  // Soft, frosted 3-D glow (matches the Figma render): feather the band's
-                  // edges with a blur, raise opacity so the white→blue reads, and keep the
-                  // inner shadow for the recessed/embossed depth. (Strict LUMINOSITY blend
-                  // flattened it against the gradient backdrop, so we render the look directly.)
-                  opacity: 0.55,
+                  // Soft, frosted, near-neutral 3-D track (matches Figma). The LUMINOSITY
+                  // blend is essential: it keeps only the white→blue gradient's *lightness*
+                  // and takes the backdrop's muted colour, so the ring reads pale grey-white,
+                  // NOT bright blue. 14px width gives it presence at Figma's 0.3 opacity; the
+                  // blur feathers the edges (glow) and the inner shadow adds recessed depth.
+                  opacity: 0.3,
+                  mixBlendMode: "luminosity",
                   filter: "blur(1.5px)",
                   boxShadow: "inset 2px 3px 7px #4b89b8",
                 }}
