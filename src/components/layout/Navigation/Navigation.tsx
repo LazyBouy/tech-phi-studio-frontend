@@ -150,9 +150,12 @@ export function Navigation() {
               edge (Figma 49px / 250px ÷ 320). The path-follow animation is CH-14 (D-014).
               Fixed 43px below the header; height fixed (content-driven), width fluid. */}
           <div className="mt-[43px] flex shrink-0 justify-center px-7">
-            <ul className="relative flex h-[430px] w-full max-w-[420px] flex-col items-center justify-center gap-4 rounded-[20px] border-[1.5px] border-white-50">
-              <span className="absolute left-[15.3%] top-0 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
-              <span className="absolute bottom-0 left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
+            <ul className="relative flex h-[430px] w-full max-w-[420px] flex-col items-center justify-center gap-4 rounded-[26px] border-[12px] border-white/25">
+              {/* The path is a ~12px translucent TRACK (measured off Figma), not a hairline —
+                  the 12px balls sit INSIDE its thickness, centred on the band (6px = half the
+                  border). Outer radius 26 keeps the track centreline at Figma's radius 20. */}
+              <span className="absolute left-[15.3%] top-[6px] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              <span className="absolute bottom-[6px] left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
               {PRIMARY_NAV.map((link) => (
                 <li key={link.href}>
                   <Link
