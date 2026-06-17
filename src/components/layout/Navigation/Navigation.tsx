@@ -171,8 +171,12 @@ export function Navigation() {
                   WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
                   maskComposite: "exclude",
-                  opacity: 0.3,
-                  mixBlendMode: "luminosity",
+                  // Soft, frosted 3-D glow (matches the Figma render): feather the band's
+                  // edges with a blur, raise opacity so the white→blue reads, and keep the
+                  // inner shadow for the recessed/embossed depth. (Strict LUMINOSITY blend
+                  // flattened it against the gradient backdrop, so we render the look directly.)
+                  opacity: 0.55,
+                  filter: "blur(1.5px)",
                   boxShadow: "inset 2px 3px 7px #4b89b8",
                 }}
               />
