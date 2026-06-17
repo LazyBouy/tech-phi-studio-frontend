@@ -150,24 +150,31 @@ export function Navigation() {
               edge (Figma 49px / 250px ÷ 320). The path-follow animation is CH-14 (D-014).
               Fixed 43px below the header; height fixed (content-driven), width fluid. */}
           <div className="mt-[43px] flex shrink-0 justify-center px-7">
-            <ul className="relative flex h-[430px] w-full max-w-[420px] flex-col items-center justify-center gap-4 rounded-[26px] border-[12px] border-white/25">
-              {/* The path is a ~12px translucent TRACK (measured off Figma), not a hairline —
-                  the 12px balls sit INSIDE its thickness, centred on the band (6px = half the
-                  border). Outer radius 26 keeps the track centreline at Figma's radius 20. */}
+            {/* Outer box = the path's bounding box. The track is an absolute OVERLAY so the
+                balls/links position against the OUTER edge. (Putting the 12px border on this
+                box would move the positioning origin to the padding box — inside the border —
+                and push the balls ~6px off the track, onto the content side.) */}
+            <div className="relative h-[430px] w-full max-w-[420px]">
+              {/* ~12px translucent TRACK (measured off Figma); ball Ø = track thickness so the
+                  balls ride INSIDE the band. Outer radius 26 keeps the centreline at radius 20. */}
+              <div className="absolute inset-0 rounded-[26px] border-[12px] border-white/25" aria-hidden />
+              {/* Balls centred on the band (6px = half the 12px track). CH-14 animates them along it. */}
               <span className="absolute left-[15.3%] top-[6px] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
               <span className="absolute bottom-[6px] left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
-              {PRIMARY_NAV.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="font-serif text-[40px] italic leading-[1.16] tracking-tight text-ink"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+              <ul className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                {PRIMARY_NAV.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="font-serif text-[40px] italic leading-[1.16] tracking-tight text-ink"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Spacer absorbs all height variation so the card above stays put. */}
