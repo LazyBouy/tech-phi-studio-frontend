@@ -14,11 +14,8 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Logo } from "@/components/layout/Logo";
 import { ScrollSmoother } from "@/animations/gsap-configs";
-import { SocialLinks, LanguageSwitcher } from "@/components/layout/SocialLinks";
+import { SocialLinks, LanguageSwitcher, SOCIAL_CIRCLE } from "@/components/layout/SocialLinks";
 import { FOOTER_NAV_COLUMNS, LEGAL_LINKS } from "@/components/layout/site-nav";
-
-const CIRCLE =
-  "flex size-[60px] items-center justify-center rounded-lg border border-white-20 bg-white-20 text-ink transition-opacity hover:opacity-80";
 
 function scrollToTop() {
   const smoother = ScrollSmoother.get();
@@ -29,7 +26,10 @@ function scrollToTop() {
 export function Footer() {
   return (
     <footer className="bg-[image:var(--gradient-footer)] px-3 pb-3 pt-28">
-      <div className="mx-auto max-w-[1440px] rounded-lg border border-white-20 bg-white-20 p-8 md:p-[52px]">
+      {/* Card = Figma "Background" rect: full width minus 12px gutters (NOT capped at
+          1440 — that ballooned the side margins on wide viewports), radius 14, 40px
+          inner padding (pb 20). Owner-reported "margin too thick" → these 12px gutters. */}
+      <div className="rounded-lg border border-white-20 bg-white-20 p-6 md:px-10 md:pt-10 md:pb-5">
         {/* Top: brand + link columns */}
         <div className="flex flex-col justify-between gap-10 md:flex-row">
           <div className="flex flex-col gap-4">
@@ -38,7 +38,7 @@ export function Footer() {
               Proudly Based in Germany, Serving Worldwide
             </p>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-[30px]">
             {FOOTER_NAV_COLUMNS.map((column, i) => (
               <ul key={i} className="flex flex-col">
                 {column.map((link) => (
@@ -58,9 +58,9 @@ export function Footer() {
 
         {/* Bottom: socials + lang · copyright · legal + back-to-top */}
         <div className="mt-12 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-[30px]">
             <SocialLinks />
-            <LanguageSwitcher className="ml-2" />
+            <LanguageSwitcher />
           </div>
 
           <p className="text-body tracking-snug text-ink">
@@ -81,7 +81,7 @@ export function Footer() {
               type="button"
               onClick={scrollToTop}
               aria-label="Back to top"
-              className={cn(CIRCLE, "shrink-0")}
+              className={cn(SOCIAL_CIRCLE, "shrink-0")}
             >
               <svg viewBox="0 0 24 24" className="size-5" fill="none" aria-hidden>
                 <path d="M12 19V5M12 5l-6 6M12 5l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

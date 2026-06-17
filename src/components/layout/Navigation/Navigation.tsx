@@ -18,8 +18,9 @@ import { Logo } from "@/components/layout/Logo";
 import { SocialLinks, LanguageSwitcher } from "@/components/layout/SocialLinks";
 import { CONTACT_HREF, PRIMARY_NAV } from "@/components/layout/site-nav";
 
+// Figma "Button Secondary" — cornerRadius 10 (not 14), translucent #ffffff33.
 const CTA_CLASSES =
-  "inline-flex items-center justify-center rounded-lg border border-white-20 bg-white-20 font-medium text-ink transition-opacity hover:opacity-80";
+  "inline-flex items-center justify-center rounded-[10px] border border-white-20 bg-white-20 font-medium text-ink transition-opacity hover:opacity-80";
 
 function isActive(pathname: string, href: string): boolean {
   const path = href.split("#")[0];
@@ -100,7 +101,7 @@ export function Navigation() {
             onClick={() => setOpen(true)}
             aria-label="Open menu"
             aria-expanded={open}
-            className="flex size-10 items-center justify-center rounded-lg border border-white-20 bg-white-20 md:hidden"
+            className="flex size-10 items-center justify-center rounded-[10px] border border-white-20 bg-white-20 md:hidden"
           >
             <BurgerIcon />
           </button>
@@ -125,18 +126,23 @@ export function Navigation() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="flex size-10 items-center justify-center rounded-lg border border-white-20 bg-white-20 text-ink"
+                className="flex size-10 items-center justify-center rounded-[10px] border border-white-20 bg-white-20 text-ink"
               >
                 <CloseIcon />
               </button>
             </div>
           </div>
 
-          {/* centered bordered card with links + orange corner dots */}
+          {/* Centered card = Figma "Vector 707" (659:28290): a rounded-rect MOTION PATH
+              (320×430, radius 20) that the two orange balls ride. In the static frame the
+              balls are snapshots ON the path — top ball at 49px from the left on the top
+              edge, bottom ball at 250px on the bottom edge. The path-follow animation
+              (balls travelling the rounded-rect) is forward-scoped to CH-14 (D-014). */}
           <div className="flex flex-1 items-center justify-center">
-            <ul className="relative flex w-full max-w-[320px] flex-col items-center gap-4 rounded-[20px] border border-white-50 px-6 py-12">
-              <span className="absolute left-6 top-6 size-3 rounded-full bg-accent" aria-hidden />
-              <span className="absolute bottom-6 right-6 size-3 rounded-full bg-accent" aria-hidden />
+            <ul className="relative mx-auto flex h-[430px] w-[320px] flex-col items-center justify-center gap-4 rounded-[20px] border-[1.5px] border-white-50">
+              {/* Ball positions on the path (centres sit on the stroke; see CH-14). */}
+              <span className="absolute left-[15.3%] top-0 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              <span className="absolute left-[78.1%] bottom-0 size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
               {PRIMARY_NAV.map((link) => (
                 <li key={link.href}>
                   <Link

@@ -1,14 +1,16 @@
 /**
  * Shared chrome bits (CH-07) — SocialLinks + LanguageSwitcher, reused by Footer
- * and the mobile menu overlay so styling stays in one place. Social circles:
- * 60×60, rounded-lg, translucent (Figma 659:18185 / 659:28273). EN active /
- * DE inert per ADR-0002 + D-013.
+ * and the mobile menu overlay so styling stays in one place. Social buttons are
+ * 60×60 TRUE CIRCLES (Figma 659:18185 / 659:28273 — the layers are ELLIPSE nodes,
+ * `rounded-full`, not squircles), translucent #ffffff33. The two circles sit 10px
+ * apart (Figma). EN active / DE inert per ADR-0002 + D-013.
  */
 import { cn } from "@/lib/cn";
 import { SOCIAL_LINKS } from "@/components/layout/site-nav";
 
-const CIRCLE =
-  "flex size-[60px] items-center justify-center rounded-lg border border-white-20 bg-white-20 text-ink transition-opacity hover:opacity-80";
+// Exported so Footer's back-to-top button reuses the exact same circle.
+export const SOCIAL_CIRCLE =
+  "flex size-[60px] items-center justify-center rounded-full border border-white-20 bg-white-20 text-ink transition-opacity hover:opacity-80";
 
 function SocialIcon({ label }: { label: string }) {
   if (label === "Instagram") {
@@ -29,7 +31,7 @@ function SocialIcon({ label }: { label: string }) {
 
 export function SocialLinks({ className }: { className?: string }) {
   return (
-    <div className={cn("flex items-center gap-4", className)}>
+    <div className={cn("flex items-center gap-[10px]", className)}>
       {SOCIAL_LINKS.map((s) => (
         <a
           key={s.label}
@@ -37,7 +39,7 @@ export function SocialLinks({ className }: { className?: string }) {
           aria-label={s.label}
           target="_blank"
           rel="noopener noreferrer"
-          className={CIRCLE}
+          className={SOCIAL_CIRCLE}
         >
           <SocialIcon label={s.label} />
         </a>

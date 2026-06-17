@@ -125,8 +125,19 @@
   /* ---- Brand gradients (sampled from Figma; reused on hero/menu/footer) --- */
   /* "gradient1" — cool grey → neutral → peach (hero/mobile-menu background). */
   --gradient-hero: linear-gradient(180deg, #b9bfc9 0%, #dbdadd 50%, #f4bda4 100%);
-  /* Footer field — page grey fading into a soft light blue. */
-  --gradient-footer: linear-gradient(180deg, #e5e6e8 0%, #cfe0f5 55%, #a8cef5 100%);
+  /* Footer field — Figma "Footer gradient" rect (659:18158) is a transparent-top →
+     opaque sky-blue-bottom paint (alpha ramps 0→~72%). Values below are the rect
+     composited over the page grey (#e5e6e8): stays grey under the card, then deepens
+     to a saturated sky blue at the bottom edge. Re-derived by PIL-sampling the rect's
+     RGBA per .figma-captures/sample_gradients.py (D-014 round 2). */
+  --gradient-footer: linear-gradient(
+    180deg,
+    #e5e6e8 0%,
+    #e2e5e9 42%,
+    #c7d8ec 66%,
+    #92bff2 88%,
+    #71b1f4 100%
+  );
 
   /* Spacing: keep Tailwind's default 4px base (--spacing: 0.25rem). Figma uses
      ad-hoc per-section paddings (10/12/15/20/24/26/30/50) read per-component;
