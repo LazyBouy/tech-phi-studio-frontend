@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  ============================================================================
+  DESIGN TOKENS — Tech Phi Studio  (CH-02)
+  ----------------------------------------------------------------------------
+  Source of truth: Figma "Full page" (node 61:2). Values read live via figma-mcp.
+  Tailwind v4 is CSS-first → tokens live here in @theme (NOT tailwind.config.ts).
+  This is the concrete remediation of D-002 (spec assumed v3 config). See
+  docs/build/frontend/adr/ADR-0004-tailwind-v4.md.
+
+  Semantic color names below are adopted from the designer's own Figma style
+  names (left column) and mapped to clean token names (--color-*). Owner-confirmed
+  2026-06-17: tokenize ALL fonts (prune later → D-005), keep #9747ff, ink = #23252a.
+
+  Font LOADING (next/font) is deferred to CH-07/08; until then the family stacks
+  fall back to the already-loaded Geist / system fonts.
+  ============================================================================
+*/
+
+@theme {
+  /* ---- Brand / semantic colors (Figma style name → token) ---------------- */
+  --color-bg: #e5e6e8;          /* "BG/Main bg"          — page background      */
+  --color-surface: #f8f8f8;     /* "Stroke&Bg/Bg White"  — card / white surface */
+  --color-ink: #23252a;         /* "Black"               — primary text (charcoal, not #000) */
+  --color-ink-muted: #4b4d51;   /* "Gray text"           — secondary text       */
+  --color-ink-subtle: #757677;  /* "Light gray text"     — tertiary / captions  */
+  --color-accent: #ff6600;      /* "Orange"              — brand accent         */
+  --color-accent-soft: #f87c42; /* secondary orange                              */
+
+  /* ---- Neutral scale (lightest → darkest) -------------------------------- */
+  --color-white: #ffffff;
+  --color-gray-50: #f8f8f8;
+  --color-gray-150: #e5e6e8;
+  --color-gray-300: #c3c3c3;
+  --color-gray-350: #bec3cc;
+  --color-gray-360: #bdc2cb;
+  --color-gray-380: #b8bec8;
+  --color-gray-400: #b7bdc7;
+  --color-gray-600: #757677;
+  --color-gray-700: #4b4d51;
+  --color-gray-900: #23252a;
+  --color-black: #000000;
+
+  /* ---- Accent palette (warm) --------------------------------------------- */
+  --color-orange-500: #ff6600;
+  --color-orange-400: #f87c42;
+  --color-amber-300: #ffb34f;
+  --color-peach-300: #f5b799;
+  --color-peach-200: #ffbc9d;
+
+  /* ---- Accent palette (cool) --------------------------------------------- */
+  --color-blue-400: #74b4fa;
+  --color-blue-300: #8bc3ff;
+  --color-pink-200: #f9d5ea;
+  --color-violet-500: #9747ff; /* kept per owner (2026-06-17) — intentional, not a Figma artifact */
+
+  /* ---- Overlays (alpha) -------------------------------------------------- */
+  --color-white-08: #ffffff14; /*  ~8% */
+  --color-white-13: #ffffff21; /* ~13% */
+  --color-white-20: #ffffff33; /* ~20% */
+  --color-white-40: #ffffff66; /* ~40% */
+  --color-white-50: #ffffff80; /* ~50% */
+  --color-black-10: #0000001a; /* ~10% */
+  --color-gray-overlay: #a2a2a233;
+
+  /* ---- Font families (Figma) — all tokenized; prune in CH-15 (D-005) ----- */
+  --font-sans: "Work Sans", var(--font-geist-sans), system-ui, sans-serif;       /* body / UI       */
+  --font-display: "Satoshi", var(--font-geist-sans), system-ui, sans-serif;      /* medium headers  */
+  --font-serif: "Ivar Text", "Ivar Text Hydro", Georgia, "Times New Roman", serif; /* italic display */
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-matter: "Matter", system-ui, sans-serif;
+  --font-manrope: "Manrope", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* ---- Type scale (fluid 375px→1440px via clamp; Figma 🖥️/📱 named styles) -
+     Each --text-* generates a `text-*` utility with matching line-height +
+     tracking. Display/H1 fluid; body fixed. Mobile→Desktop px in comments.    */
+  --text-display: clamp(3.875rem, 1.938rem + 8.263vw, 9.375rem);   /* Big text  62→150 */
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.04em;
+
+  --text-h1: clamp(3rem, 2.296rem + 3.005vw, 5rem);                /* H1        48→80  */
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.03em;
+
+  --text-h2: clamp(2.5rem, 1.884rem + 2.629vw, 4.25rem);           /* H2        40→68  */
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.03em;
+
+  --text-h3: clamp(1.5rem, 1.456rem + 0.188vw, 1.625rem);          /* H3        24→26  */
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.02em;
+
+  --text-h4: 1.3125rem;                                            /* H4        21     */
+  --text-h4--line-height: 1.15;
+  --text-h4--letter-spacing: -0.02em;
+
+  --text-body-lg: 1.125rem;                                        /* B1        18     */
+  --text-body-lg--line-height: 1.39;
+  --text-body-lg--letter-spacing: -0.02em;
+
+  --text-body: 1rem;                                               /* B2        16     */
+  --text-body--line-height: 1.39;
+  --text-body--letter-spacing: -0.02em;
+
+  --text-body-sm: 0.875rem;                                        /* B3        14     */
+  --text-body-sm--line-height: 1.39;
+  --text-body-sm--letter-spacing: -0.02em;
+
+  /* ---- Letter-spacing utilities (Figma tracking) ------------------------- */
+  --tracking-tighter: -0.04em;
+  --tracking-tight: -0.03em;
+  --tracking-snug: -0.02em;
+
+  /* ---- Radii (Figma cornerRadius values) --------------------------------- */
+  --radius-xs: 0.125rem;  /*  2px */
+  --radius-sm: 0.3125rem; /*  5px */
+  --radius-md: 0.75rem;   /* 12px */
+  --radius-lg: 0.875rem;  /* 14px (most common) */
+  --radius-xl: 1.25rem;   /* 20px */
+  --radius-2xl: 1.875rem; /* 30px */
+  --radius-full: 62.4375rem; /* pill (Figma 100) */
+
+  /* Spacing: keep Tailwind's default 4px base (--spacing: 0.25rem). Figma uses
+     ad-hoc per-section paddings (10/12/15/20/24/26/30/50) read per-component;
+     no bespoke global rhythm to encode. */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Page defaults from tokens (light theme; dark mode deferred — out of scope CH-02) */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
