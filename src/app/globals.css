@@ -65,8 +65,8 @@
   --color-gray-overlay: #a2a2a233;
 
   /* ---- Font families (Figma) — all tokenized; prune in CH-15 (D-005) ----- */
-  --font-sans: "Work Sans", var(--font-geist-sans), system-ui, sans-serif;       /* body / UI       */
-  --font-display: "Satoshi", var(--font-geist-sans), system-ui, sans-serif;      /* medium headers  */
+  --font-sans: var(--font-work-sans), system-ui, sans-serif;                     /* body / UI (loaded via next/font) */
+  --font-display: "Satoshi", var(--font-work-sans), system-ui, sans-serif;       /* medium headers (Satoshi pending files → falls back to Work Sans) */
   --font-serif: "Ivar Text", "Ivar Text Hydro", Georgia, "Times New Roman", serif; /* italic display */
   --font-inter: "Inter", system-ui, sans-serif;
   --font-matter: "Matter", system-ui, sans-serif;
