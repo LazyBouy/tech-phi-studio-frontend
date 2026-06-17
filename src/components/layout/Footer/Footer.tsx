@@ -28,7 +28,7 @@ function scrollToTop() {
 
 export function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-blue-300 to-bg px-3 pb-3 pt-20">
+    <footer className="bg-[image:var(--gradient-footer)] px-3 pb-3 pt-28">
       <div className="mx-auto max-w-[1440px] rounded-lg border border-white-20 bg-white-20 p-8 md:p-[52px]">
         {/* Top: brand + link columns */}
         <div className="flex flex-col justify-between gap-10 md:flex-row">
@@ -38,7 +38,7 @@ export function Footer() {
               Proudly Based in Germany, Serving Worldwide
             </p>
           </div>
-          <div className="flex gap-8 md:gap-12">
+          <div className="flex gap-8">
             {FOOTER_NAV_COLUMNS.map((column, i) => (
               <ul key={i} className="flex flex-col">
                 {column.map((link) => (

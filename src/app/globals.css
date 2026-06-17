@@ -122,6 +122,12 @@
   --radius-2xl: 1.875rem; /* 30px */
   --radius-full: 62.4375rem; /* pill (Figma 100) */
 
+  /* ---- Brand gradients (sampled from Figma; reused on hero/menu/footer) --- */
+  /* "gradient1" — cool grey → neutral → peach (hero/mobile-menu background). */
+  --gradient-hero: linear-gradient(180deg, #b9bfc9 0%, #dbdadd 50%, #f4bda4 100%);
+  /* Footer field — page grey fading into a soft light blue. */
+  --gradient-footer: linear-gradient(180deg, #e5e6e8 0%, #cfe0f5 55%, #a8cef5 100%);
+
   /* Spacing: keep Tailwind's default 4px base (--spacing: 0.25rem). Figma uses
      ad-hoc per-section paddings (10/12/15/20/24/26/30/50) read per-component;
      no bespoke global rhythm to encode. */

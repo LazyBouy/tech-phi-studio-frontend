@@ -66,11 +66,11 @@ export function Navigation() {
     <header className="fixed inset-x-0 top-0 z-50">
       <nav className="mx-auto flex h-[72px] items-center justify-between px-4 md:h-[90px] md:px-[60px]">
         {/* Left: logo + desktop links */}
-        <div className="flex items-center gap-6 md:gap-10">
+        <div className="flex items-center gap-6 md:gap-[51px]">
           <Link href="/" aria-label="Tech Philosophy — home">
             <Logo className="h-8 md:h-10" />
           </Link>
-          <ul className="hidden items-center gap-7 md:flex">
+          <ul className="hidden items-center gap-5 md:flex">
             {PRIMARY_NAV.map((link) => (
               <li key={link.href}>
                 <Link
@@ -109,7 +109,7 @@ export function Navigation() {
 
       {/* Mobile overlay menu — Figma frame 659:28273 */}
       {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-gradient-to-b from-bg to-peach-300 px-4 md:hidden">
+        <div className="fixed inset-0 z-[60] flex flex-col bg-[image:var(--gradient-hero)] px-4 md:hidden">
           {/* header: logo + Get in Touch + X close */}
           <div className="flex h-[72px] items-center justify-between">
             <Logo className="h-8" />
