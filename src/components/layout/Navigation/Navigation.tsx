@@ -155,12 +155,30 @@ export function Navigation() {
                 box would move the positioning origin to the padding box — inside the border —
                 and push the balls ~6px off the track, onto the content side.) */}
             <div className="relative h-[430px] w-full max-w-[420px]">
-              {/* ~12px translucent TRACK (measured off Figma); ball Ø = track thickness so the
-                  balls ride INSIDE the band. Outer radius 26 keeps the centreline at radius 20. */}
-              <div className="absolute inset-0 rounded-[26px] border-[12px] border-white/25" aria-hidden />
-              {/* Balls centred on the band (6px = half the 12px track). CH-14 animates them along it. */}
-              <span className="absolute left-[15.3%] top-[6px] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
-              <span className="absolute bottom-[6px] left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              {/* TRACK — Figma "Vector 707" (659:28290), exact values read live via the
+                  extended figma-mcp (CH-T1): a 14px stroke filled with a white→blue linear
+                  gradient at 30% opacity, LUMINOSITY blend, plus an inner shadow. Rendered as
+                  a gradient-border ring: the gradient paints the border-box and is masked out
+                  of the padding-box (mask-composite exclude). Inline style — this layered
+                  mask/blend/inset-shadow combo has no clean Tailwind-utility form. Outer radius
+                  27 keeps the stroke centreline at Figma's radius 20 (20 + half of 14). */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-[27px]"
+                style={{
+                  border: "14px solid transparent",
+                  background: "linear-gradient(174deg, #ffffff, #007bff) border-box",
+                  WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
+                  opacity: 0.3,
+                  mixBlendMode: "luminosity",
+                  boxShadow: "inset 2px 3px 7px #4b89b8",
+                }}
+              />
+              {/* Balls centred on the 14px band (7px = half the stroke). CH-14 animates along it. */}
+              <span className="absolute left-[15.3%] top-[7px] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              <span className="absolute bottom-[7px] left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
               <ul className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                 {PRIMARY_NAV.map((link) => (
                   <li key={link.href}>
