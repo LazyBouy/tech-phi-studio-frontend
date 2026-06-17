@@ -108,13 +108,24 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile overlay menu — Figma frame 659:28273 */}
+      {/* Mobile overlay menu — Figma frame 659:28273 (375×800).
+          RESPONSIVENESS CONTRACT (owner, premium portrait fidelity):
+          • Layout responds to WIDTH only — never to height. The card is anchored a fixed
+            43px below the 72px header (Figma y115); the bottom row is anchored to the
+            bottom; a flex-1 spacer absorbs all height variation. So neither the card nor
+            the path moves as the viewport height changes (only the empty gap does).
+          • The card/path width is fluid: 100vw − 56px (Figma's 28px side gutters), capped
+            at 420px for wide portrait phones (~360–481px range). At 375px it is exactly
+            319px ≈ Figma's 320px. The path therefore widens with the viewport, matching
+            how the Figma design scales.
+          • Menu-link type is FIXED at 40px (📱Header/H2-Italic) — NOT the fluid text-h2
+            token, which grew past 40px above 375px and read "too big". */}
       {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-[image:var(--gradient-hero)] px-4 md:hidden">
-          {/* header: logo + Get in Touch + X close */}
-          <div className="flex h-[72px] items-center justify-between">
-            <Logo className="h-8" />
-            <div className="flex items-center gap-3">
+        <div className="fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-[image:var(--gradient-hero)] md:hidden">
+          {/* Header bar (72px) — logo 16px from left, CTA + close 16px from right, 8px apart. */}
+          <div className="flex h-[72px] shrink-0 items-center justify-between px-4">
+            <Logo className="h-[34px]" />
+            <div className="flex items-center gap-2">
               <Link
                 href={CONTACT_HREF}
                 onClick={() => setOpen(false)}
@@ -133,22 +144,21 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Centered card = Figma "Vector 707" (659:28290): a rounded-rect MOTION PATH
-              (320×430, radius 20) that the two orange balls ride. In the static frame the
-              balls are snapshots ON the path — top ball at 49px from the left on the top
-              edge, bottom ball at 250px on the bottom edge. The path-follow animation
-              (balls travelling the rounded-rect) is forward-scoped to CH-14 (D-014). */}
-          <div className="flex flex-1 items-center justify-center">
-            <ul className="relative mx-auto flex h-[430px] w-[320px] flex-col items-center justify-center gap-4 rounded-[20px] border-[1.5px] border-white-50">
-              {/* Ball positions on the path (centres sit on the stroke; see CH-14). */}
+          {/* Card = Figma "Vector 707" (659:28290): a rounded-rect MOTION PATH (radius 20)
+              that the two orange balls ride. Static balls here are snapshots ON the path —
+              top ball at 15.3% across the top edge, bottom ball at 78.1% across the bottom
+              edge (Figma 49px / 250px ÷ 320). The path-follow animation is CH-14 (D-014).
+              Fixed 43px below the header; height fixed (content-driven), width fluid. */}
+          <div className="mt-[43px] flex shrink-0 justify-center px-7">
+            <ul className="relative flex h-[430px] w-full max-w-[420px] flex-col items-center justify-center gap-4 rounded-[20px] border-[1.5px] border-white-50">
               <span className="absolute left-[15.3%] top-0 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
-              <span className="absolute left-[78.1%] bottom-0 size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              <span className="absolute bottom-0 left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
               {PRIMARY_NAV.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="font-serif text-h2 italic text-ink"
+                    className="font-serif text-[40px] italic leading-[1.16] tracking-tight text-ink"
                   >
                     {link.label}
                   </Link>
@@ -157,8 +167,11 @@ export function Navigation() {
             </ul>
           </div>
 
-          {/* bottom: socials + language switcher */}
-          <div className="mb-8 flex items-center justify-between">
+          {/* Spacer absorbs all height variation so the card above stays put. */}
+          <div className="flex-1" />
+
+          {/* Bottom row — socials 16px from left, EN/DE near the right, 20px from bottom. */}
+          <div className="mb-5 flex shrink-0 items-center justify-between px-4">
             <SocialLinks />
             <LanguageSwitcher />
           </div>
