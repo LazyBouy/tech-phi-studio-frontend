@@ -16,7 +16,7 @@
 | State Management  | Zustand (confirmed)       | Client UI state only (modals, quiz progress) |
 | Data Fetching     | TanStack Query / React Query (confirmed) | All server state — no raw useEffect |
 | Styling           | Tailwind CSS (confirmed)  | Utility-first; no CSS Modules          |
-| Animation         | GSAP free tier + split-type + Lenis (confirmed) | See Animation section below |
+| Animation         | GSAP (now 100% free): ScrollTrigger + SplitText + ScrollSmoother + @gsap/react; lottie-web | See Animation section below |
 | Design Source     | Figma                     | Always the source of truth             |
 
 ---
@@ -43,18 +43,19 @@ Never combine steps 3, 4, and 5 in a single pass.
 
 ### Confirmed Animation Stack
 Animation library decision is closed. The stack is:
-- **GSAP free tier** — ScrollTrigger, timelines, MotionPath, stagger
-- **split-type** — character/word/line splitting (replaces paid GSAP SplitText)
-- **Lenis** — smooth scroll (replaces paid GSAP ScrollSmoother)
+- **GSAP (now 100% free)** — ScrollTrigger, timelines, MotionPath, stagger
+- **GSAP SplitText** — character/word/line splitting (first-party; GSAP went 100% free in 2025)
+- **GSAP ScrollSmoother** — smooth scroll (first-party; `#smooth-wrapper`/`#smooth-content`, `smoothTouch:false`, automatic ScrollTrigger integration)
+- **@gsap/react** — `useGSAP` hook for setup/cleanup; **lottie-web** — vector animations
 
-Do NOT add Framer Motion — the stack is closed. For any animation requirement not covered by these three, discuss before adding anything new.
+Do NOT add Framer Motion — the stack is closed. For any animation requirement not covered by this stack, discuss before adding anything new.
 
 When choosing which tool to use within the confirmed stack:
 - Scroll-triggered animation → GSAP ScrollTrigger
-- Text splitting (reveal by character/word/line) → split-type + GSAP
+- Text splitting (reveal by character/word/line) → GSAP SplitText
 - Timeline/sequence animation → GSAP timeline
 - SVG path animation → GSAP MotionPath
-- Smooth scroll behaviour → Lenis
+- Smooth scroll behaviour → GSAP ScrollSmoother
 - CSS-only micro-interaction (hover, focus) → pure CSS transitions, no library
 
 ### Animation Implementation Rules
@@ -62,7 +63,7 @@ Every animation must follow this structure:
 
 ```tsx
 // ANIMATION: [Figma component name] — [describe the visual effect]
-// LIBRARY: [GSAP | split-type | Lenis | CSS]
+// LIBRARY: [GSAP | SplitText | ScrollSmoother | Lottie | CSS]
 // FIGMA REF: [Figma frame/prototype link or description]
 // TIMING: duration=[value]ms, easing=[curve], delay=[value]ms
 
@@ -93,7 +94,7 @@ if (!prefersReducedMotion) {
 /src
 ├── animations/
 │   ├── gsap-configs.ts    ← GSAP timeline + ScrollTrigger configs
-│   ├── lenis-config.ts    ← Lenis smooth scroll initialisation
+│   ├── scroll-smoother.ts ← GSAP ScrollSmoother initialisation
 │   └── tokens.ts          ← Duration, easing values from Figma
 ├── components/
 │   └── [ComponentName]/
