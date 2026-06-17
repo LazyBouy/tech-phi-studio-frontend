@@ -167,30 +167,38 @@ export function Navigation() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 rounded-[27px]"
                 style={{
-                  border: "14px solid transparent",
-                  background: "linear-gradient(174deg, #ffffff, #007bff) border-box",
+                  border: "11px solid transparent",
+                  // white → LIGHT blue (not #007bff): under luminosity only the stop's
+                  // lightness matters, and #007bff's low luminance was darkening the warm
+                  // bottom backdrop. A light-blue stop keeps the band pale top-to-bottom.
+                  background: "linear-gradient(174deg, #ffffff, #bcd9f5) border-box",
                   WebkitMask: "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
                   WebkitMaskComposite: "xor",
                   maskComposite: "exclude",
-                  opacity: 0.5,
+                  opacity: 0.45,
                   mixBlendMode: "luminosity",
                   filter: "blur(0.5px)",
                 }}
               />
-              {/* Layer 2 — the depth (normal blend so it reads even where the band is faint):
-                  the Figma inner shadow (top-left, recessed) + a soft bottom-right highlight =
-                  a clearly 3-D groove the balls sit in. */}
+              {/* Layer 2 — the depth (normal blend so it reads even where the band is faint).
+                  A recessed groove on ALL four edges so both sides are equally visible: a soft
+                  dark inset from every edge, with a stronger top-left inset for subtle 3-D.
+                  Colour is a NEUTRAL cool grey (≈ the luminance of Figma's #4b89b8 inner shadow,
+                  which Figma neutralises under its luminosity blend) — keeps the depth without
+                  the blue cast. (A white bottom-right highlight was invisible on the light
+                  backdrop, which had made the right edge look bare.) */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 rounded-[27px]"
                 style={{
                   boxShadow:
-                    "inset 2px 3px 7px rgba(75,137,184,0.55), inset -2px -3px 8px rgba(255,255,255,0.5)",
+                    "inset 0 0 6px rgba(102,105,112,0.4), inset 2px 3px 7px rgba(102,105,112,0.5), inset 0 -3px 6px rgba(88,92,102,0.6)",
                 }}
               />
-              {/* Balls centred on the 14px band (7px = half the stroke). CH-14 animates along it. */}
-              <span className="absolute left-[15.3%] top-[7px] size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
-              <span className="absolute bottom-[7px] left-[78.1%] size-3 -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              {/* Balls (11px) centred on the 11px band (5.5px = half the stroke) so each fills
+                  the track. CH-14 animates them along it. */}
+              <span className="absolute left-[15.3%] top-[5.5px] size-[11px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" aria-hidden />
+              <span className="absolute bottom-[5.5px] left-[78.1%] size-[11px] -translate-x-1/2 translate-y-1/2 rounded-full bg-accent" aria-hidden />
               <ul className="absolute inset-0 flex flex-col items-center justify-center gap-4">
                 {PRIMARY_NAV.map((link) => (
                   <li key={link.href}>
