@@ -15,6 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { Logo } from "@/components/layout/Logo";
+import { SocialLinks, LanguageSwitcher } from "@/components/layout/SocialLinks";
 import { CONTACT_HREF, PRIMARY_NAV } from "@/components/layout/site-nav";
 
 const CTA_CLASSES =
@@ -35,6 +36,15 @@ function BurgerIcon() {
       <span className="size-1 rounded-full bg-ink" />
       <span className="size-1 rounded-full bg-accent" />
     </span>
+  );
+}
+
+/** Close (X) icon for the open menu (Figma 659:28273 — mingcute:close-line). */
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-4" fill="none" aria-hidden>
+      <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
   );
 }
 
@@ -97,40 +107,55 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile overlay menu */}
+      {/* Mobile overlay menu — Figma frame 659:28273 */}
       {open && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-bg px-4 md:hidden">
+        <div className="fixed inset-0 z-[60] flex flex-col bg-gradient-to-b from-bg to-peach-300 px-4 md:hidden">
+          {/* header: logo + Get in Touch + X close */}
           <div className="flex h-[72px] items-center justify-between">
             <Logo className="h-8" />
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              className="flex size-10 items-center justify-center rounded-lg border border-black-10 text-ink"
-            >
-              <span aria-hidden className="text-h4 leading-none">×</span>
-            </button>
+            <div className="flex items-center gap-3">
+              <Link
+                href={CONTACT_HREF}
+                onClick={() => setOpen(false)}
+                className={cn(CTA_CLASSES, "px-5 py-2.5 text-body-sm")}
+              >
+                Get in Touch
+              </Link>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="flex size-10 items-center justify-center rounded-lg border border-white-20 bg-white-20 text-ink"
+              >
+                <CloseIcon />
+              </button>
+            </div>
           </div>
-          <ul className="mt-8 flex flex-col gap-6">
-            {PRIMARY_NAV.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="font-display text-h3 text-ink"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link
-            href={CONTACT_HREF}
-            onClick={() => setOpen(false)}
-            className={cn(CTA_CLASSES, "mt-auto mb-10 w-full px-6 py-4 text-body")}
-          >
-            Get in Touch
-          </Link>
+
+          {/* centered bordered card with links + orange corner dots */}
+          <div className="flex flex-1 items-center justify-center">
+            <ul className="relative flex w-full max-w-[320px] flex-col items-center gap-4 rounded-[20px] border border-white-50 px-6 py-12">
+              <span className="absolute left-6 top-6 size-3 rounded-full bg-accent" aria-hidden />
+              <span className="absolute bottom-6 right-6 size-3 rounded-full bg-accent" aria-hidden />
+              {PRIMARY_NAV.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="font-serif text-h2 italic text-ink"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* bottom: socials + language switcher */}
+          <div className="mb-8 flex items-center justify-between">
+            <SocialLinks />
+            <LanguageSwitcher />
+          </div>
         </div>
       )}
     </header>
