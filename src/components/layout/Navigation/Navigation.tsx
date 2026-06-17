@@ -199,8 +199,10 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Spacer absorbs all height variation so the card above stays put. */}
-          <div className="flex-1" />
+          {/* Spacer: floored at the Figma card→social gap (545→720 = 175px) so the social
+              row never creeps toward the track as height shrinks (it scrolls instead);
+              grows beyond that on tall screens to keep the row bottom-anchored. */}
+          <div className="min-h-[175px] flex-1" aria-hidden />
 
           {/* Bottom row — socials 16px from left, EN/DE near the right, 20px from bottom. */}
           <div className="mb-5 flex shrink-0 items-center justify-between px-4">
