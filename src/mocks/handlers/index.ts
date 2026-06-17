@@ -11,6 +11,7 @@
  */
 
 import { http, HttpResponse } from "msw";
+import { cmsHandlers } from "./cms";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "";
 
@@ -19,4 +20,6 @@ export const handlers = [
   http.get(`${API_BASE}/health`, () =>
     HttpResponse.json({ status: "ok", mocked: true }),
   ),
+  // Domain handlers (append per chunk: technologies/quiz/contact/auth later).
+  ...cmsHandlers,
 ];
