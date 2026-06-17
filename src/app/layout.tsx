@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { MswInit } from "@/mocks/MswInit";
 import { Providers } from "@/app/providers";
+import { AnimationProvider } from "@/animations/scroll-smoother";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <MswInit />
-        <Providers>{children}</Providers>
+        <Providers>
+          <AnimationProvider>{children}</AnimationProvider>
+        </Providers>
       </body>
     </html>
   );
