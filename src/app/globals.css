@@ -66,8 +66,8 @@
 
   /* ---- Font families (Figma) — all tokenized; prune in CH-15 (D-005) ----- */
   --font-sans: var(--font-work-sans), system-ui, sans-serif;                     /* body / UI (loaded via next/font) */
-  --font-display: "Satoshi", var(--font-work-sans), system-ui, sans-serif;       /* medium headers (Satoshi pending files → falls back to Work Sans) */
-  --font-serif: "Ivar Text", "Ivar Text Hydro", Georgia, "Times New Roman", serif; /* italic display */
+  --font-display: var(--font-satoshi), var(--font-work-sans), system-ui, sans-serif; /* Satoshi Medium — H1–H4 medium (self-hosted) */
+  --font-serif: var(--font-ivar), Georgia, "Times New Roman", serif;             /* Ivar Text Italic — italic display (self-hosted) */
   --font-inter: "Inter", system-ui, sans-serif;
   --font-matter: "Matter", system-ui, sans-serif;
   --font-manrope: "Manrope", system-ui, sans-serif;
@@ -123,8 +123,16 @@
   --radius-full: 62.4375rem; /* pill (Figma 100) */
 
   /* ---- Brand gradients (sampled from Figma; reused on hero/menu/footer) --- */
-  /* "gradient1" — cool grey → neutral → peach (hero/mobile-menu background). */
-  --gradient-hero: linear-gradient(180deg, #b9bfc9 0%, #dbdadd 50%, #f4bda4 100%);
+  /* "Hero gradient" 659:18750 — exact 5-stop vertical (read via figma-mcp 2026-06-18,
+     superseding the earlier 3-stop PIL approximation). Cool grey → neutral → peach. */
+  --gradient-hero: linear-gradient(
+    180deg,
+    #b8bec8 0%,
+    #dcdbde 51.6%,
+    #e7dad5 67.1%,
+    #f1cab9 84.8%,
+    #f5b799 100%
+  );
   /* Footer field — Figma "Footer gradient" rect (659:18158). Exact paint now read via
      the extended figma-mcp (CH-T1): GRADIENT_LINEAR, stop #007bff → #eeeeee00
      (transparent), running vertically with alpha ramping 0→~72%. Stops below are that

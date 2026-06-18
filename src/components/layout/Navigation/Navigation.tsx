@@ -15,12 +15,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { Logo } from "@/components/layout/Logo";
+import { Container } from "@/components/layout/Container";
 import { SocialLinks, LanguageSwitcher } from "@/components/layout/SocialLinks";
 import { CONTACT_HREF, PRIMARY_NAV } from "@/components/layout/site-nav";
 
-// Figma "Button Secondary" — cornerRadius 10 (not 14), translucent #ffffff33.
+// Figma "Button Secondary Small" (659:29502) — cornerRadius 14, translucent #ffffff33
+// fill + 1px inside border. (Re-audit 2026-06-18: the live instance reads radius 14, not
+// the 10 the salvaged CH-07 code assumed.)
 const CTA_CLASSES =
-  "inline-flex items-center justify-center rounded-[10px] border border-white-20 bg-white-20 font-medium text-ink transition-opacity hover:opacity-80";
+  "inline-flex items-center justify-center rounded-[14px] border border-white-20 bg-white-20 font-medium text-ink transition-opacity hover:opacity-80";
 
 function isActive(pathname: string, href: string): boolean {
   const path = href.split("#")[0];
@@ -65,7 +68,8 @@ export function Navigation() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="mx-auto flex h-[72px] items-center justify-between px-4 md:h-[90px] md:px-[60px]">
+      <nav className="h-[72px] md:h-[90px]">
+        <Container className="flex h-full items-center justify-between">
         {/* Left: logo + desktop links */}
         <div className="flex items-center gap-6 md:gap-[51px]">
           <Link href="/" aria-label="Tech Philosophy — home">
@@ -106,6 +110,7 @@ export function Navigation() {
             <BurgerIcon />
           </button>
         </div>
+        </Container>
       </nav>
 
       {/* Mobile overlay menu — Figma frame 659:28273 (375×800).
